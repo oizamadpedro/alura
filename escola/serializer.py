@@ -5,7 +5,7 @@ from escola.validators import *
 class AlunoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aluno
-        fields = ['id', 'nome', 'rg', 'cpf', 'celular', 'email']
+        fields = '__all__'
 
     def validate(self, data):
         if not cpf_valido(data['cpf']):
@@ -18,15 +18,22 @@ class AlunoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'celular': "O Número de celular deve seguir este modelo: 11 91234-1234"})
         return data
 
-class CursoSerializer(serializers.ModelSerializer):
+class AlunoSerializer2(serializers.ModelSerializer):
     class Meta:
-        model = Curso
-        fields = '__all__'
-    
+        model = Aluno
+        fields = ['nome', 'cpf', 'email']
+
 class MatriculaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Matricula
         exclude = []
+
+class CursoSerializer(serializers.ModelSerializer):
+    exibe = AlunoSerializer2()
+    class Meta:
+        model = Curso
+        fields = '__all__'
+    
 
 class ListaMatriculasAlunoSerializer(serializers.ModelSerializer):
     curso = serializers.ReadOnlyField(source='curso.descricao')
@@ -43,3 +50,9 @@ class ListaAlunosMatriculadosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Matricula
         fields = ['aluno_nome']
+
+
+class AlunoSerializerV2(serializers.ModelSerializer):
+    class Meta:
+        model = Aluno
+        fields = ['id', 'nome', 'rg', 'cpf', 'celular', 'email']

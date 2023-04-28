@@ -8,6 +8,8 @@ class Aluno(models.Model):
     cpf = models.CharField(max_length=11)
     email = models.EmailField(blank=False, max_length=30)
     celular = models.CharField(max_length=14)
+    foto = models.ImageField(blank=True)
+    exibe = models.IntegerField(null = True)
 
     def __str__(self):
         return self.nome
@@ -22,6 +24,7 @@ class Curso(models.Model):
     codigo_curso = models.CharField(max_length=30)
     descricao = models.CharField(max_length=100)
     nivel = models.CharField(max_length=1, choices=NIVEL, blank=False, null=False, default='B')
+    exibe = models.ForeignKey(Aluno, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.descricao
